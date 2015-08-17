@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>QA Testing</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<meta charset="UTF-8">
+	<script src="lib/jquery.min.js"></script>
+</head>
+<body>
+	<button onclick="document.location.reload(true);">Reload</button>
+	<div id="qa-testing-log"></div>
+	<script>
+		window.QATesting = {
+			ERROR: 'error',
+			SUCCESS: 'success',
+			INFO: 'info',
+			WARNING: 'warning',
+			testFunctions: [],
+
+			log: function (message, type) {
+				var formatted = '';
+				if (typeof type !== 'string') {
+					type = 'info';
+				}
+				if (typeof message !== 'string') {
+					message = message.toString();
+				}
+				switch (type.toLowerCase()) {
+					case 'error':
+						formatted = '<pre style="color: red">' + message + '</pre>';
+						break;
+					case 'success':
+						formatted = '<pre style="color: green">' + message + '</pre>';
+						break;
+					case 'warning':
+						formatted = '<pre style="color: orange">' + message + '</pre>';
+						break;
+					default: 
+						formatted = '<pre>' + message + '</pre>';
+				}
+				$('#qa-testing-log').append(formatted);
+			},
+
+			loadNext: function () {
+				if (QATesting.testFiles.length > 0) {
+					QATesting.load(QATesting.testFiles.shift());
+				} else {
+					QATesting.runNext();
+				}
+			},
+
+			load: function (path) {
+				var testScript = document.createElement('script'),
+					now = new Date(),
+					name = /\/?\\?([^\\\/]+\.js)$/i.exec(path)[1];
+				testScript.type = 'application/javascript';
+				testScript.src = path;
+				document.getElementsByTagName('head')[0].appendChild(testScript);
+				QATesting.log('Load test "' + name + '"...', QATesting.INFO);
+			},
+
+			addTest: function (test) {
+				QATesting.testFunctions.push(test);
+			},
+
+			runNext: function () {
+				if (QATesting.testFunctions.length > 0) {
+					(QATesting.testFunctions.shift())();
+				} else {
+					QATesting.log('Done', QATesting.INFO);
+				}
+			},
+
+			getQueryParameters: function () {
+				var url = window.location.href,
+				params = {};
+			    url.split('?')[1].split('&').forEach(function(element) {
+			        var arr = element.split('='),
+			        	key = arr[0];
+			        if (/\[\]$/.test(key) === true) {
+			        	key = key.replace(/\[\]$/, '');
+			        	if (typeof params[key] === 'undefined') {
+			        		params[key] = [];
+			        	}
+			        	params[key].push(decodeURIComponent(arr[1]));
+			        } else {
+			        	params[key] = decodeURIComponent(arr[1]);
+			        }		        
+			    });
+			    return params;
+			}
+		};
+
+		$(document).ready(function () {
+			var params = QATesting.getQueryParameters();
+		    if (params && typeof params.testFiles !== 'undefined' && params.testFiles.length) {
+		    	QATesting.testFiles = params.testFiles;
+		    	QATesting.loadNext();
+		    } else {
+		    	QATesting.log('No test to run', QATesting.WARNING);
+		    }
+		});
+	</script>
+</body>
+</html>

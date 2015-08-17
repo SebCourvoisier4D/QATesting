@@ -1,0 +1,75 @@
+{
+	"extension": {
+		"name": "QATesting",
+		"version": "0.0.1",
+		"description": "All Purpose QA Testing Extension",
+		"icon": "icon.png",
+		"senders": [
+			{ 
+				"location": "studioToolbar", 
+				"tips": "Run Tests",
+				"menu":
+				[
+					{
+						"actionName": "qatesting_run"
+					}
+				]
+			}
+		],
+		"actions": [{
+			"name": "qatesting_start",
+			"title": "qatesting_start",
+			"trigger": [{
+				"event": "onStudioStart"
+			}]
+		}, {
+			"name": "qatesting_any",
+			"title": "qatesting_any",
+			"trigger": [{
+				"event": "fromExtension"
+			}, {
+				"event": "fromSender"
+			}, {
+				"event": "onSave"
+			}, {
+				"event": "onFileDirty"
+			}, {
+				"event": "onFilesAddedInSolution"
+			}, {
+				"event": "onFilesRemovedFromSolution"
+			}, {
+				"event": "onFolderCollapsed"
+			}, {
+				"event": "onFolderExpanded"
+			}, {
+				"event": "onSolutionCreated"
+			}, {
+				"event": "onProjectCreated"
+			}, {
+				"event": "onSolutionOpened"
+			}, {
+				"event": "onSolutionClosed"
+			}, {
+				"event": "onFileRenamed"
+			}, {
+				"event": "onFilesMovedInSolution"
+			}, {
+				"event": "onFileModified"
+			}, {
+				"event": "onServerConnect"
+			}, {
+				"event": "onServerDisconnect"
+			}]
+		}, {
+			"name": "qatesting_start",
+			"title": "qatesting_start"
+		}, {
+			"name": "qatesting_run",
+			"title": "Run Tests"
+		}, {
+			"name": "qatesting_any",
+			"title": "qatesting_any"
+		}],
+		"lifetime": "application_lifetime"
+	}
+}
