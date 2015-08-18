@@ -19,6 +19,10 @@ actions.qatesting_run = function qatesting_run(message) {
 				}
 			}
 		}
+		studio.extension.storage.setItem('QATestingEnv', JSON.stringify(process.env));
+		studio.extension.storage.setItem('QATestingPID', JSON.stringify(process.pid));
+		studio.extension.storage.setItem('QATestingVersion', JSON.stringify(process.version));
+		studio.extension.storage.setItem('QATestingBuildNumber', JSON.stringify(process.buildNumber));
 		studio.extension.openPageInTab(
 		    'webzone.html',
 		    'QA Testing',
