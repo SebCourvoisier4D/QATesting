@@ -20,7 +20,7 @@ actions.qatesting_run = function qatesting_run(message) {
 			}
 		}
 		studio.extension.openPageInTab(
-		    'index.html',
+		    'webzone.html',
 		    'QA Testing',
 		    false,
 		    false,
@@ -40,7 +40,7 @@ actions.qatesting_run = function qatesting_run(message) {
  */
 actions.qatesting_start = function qatesting_start(message) {
 	if (message.event === 'onStudioStart') {
-		
+		studio.extension.storage.setItem('QATesting', JSON.stringify(message));
 	}
 	return true;
 };
@@ -49,7 +49,8 @@ actions.qatesting_start = function qatesting_start(message) {
  * qatesting_any
  *
  */
-actions.qatesting_any = function qatesting_any(message) {	
+actions.qatesting_any = function qatesting_any(message) {
+	studio.extension.storage.setItem('QATesting', JSON.stringify(message));
 	return true;
 };
 

@@ -12,8 +12,6 @@ So here's the simplest thing I could come up with using this separate "QA Testin
 2. This JS file should respect the following structure:
 
 
-        'use strict';
-
         if (typeof QATesting !== 'undefined') { // ADVISED
 
             // REGISTER YOUR TEST AS A FUNCTION:
@@ -36,11 +34,37 @@ And that's it: the new JS file will be automatically run when the "Run tests" ac
 
 No test framework (no Mocha, no Chai, etc.): just do whatever you want and display relevant logs in the end. Period.
 
+### Event handling
+
+A test can also be registred to be run only when a given Studio event has been triggered:
+
+
+
+        if (typeof QATesting !== 'undefined') { // ADVISED
+
+            // REGISTER YOUR TEST AS A FUNCTION:
+    	    QATesting.addTest(function (message) { // **HERE WE GET A message ARGUMENT!**
+
+    		    // Do whatever you want here...
+                if (yourStuffIsOK) {
+                    QATesting.log('My test: PASSED.', QATesting.SUCCESS);
+                } else {
+                    QATesting.log('My test: FAILED.', QATesting.ERROR);
+                }
+
+    		    QATesting.runNext(message); // REQUIRED **PASS THE GIVEN message TO THE NEXT TEST!**
+    	    }, 'onSolutionOpened'); // REQUIRED **SET THE EVENT NAME, OR 'any' FOR ALL EVENTS!**
+
+    	    QATesting.loadNext(); // REQUIRED
+        }
+
+
 ### Version
 
-0.0.1
+0.0.2
 
 ### Changelog
 
- * [17/08/2015]: Testing card [#847](https://trello.com/c/B9rpMWQP) __Opening a page with parameters in the page url__.
+ * [18/08/2015]: 0.0.2 - Add event handling + a test triggered by every event.
+ * [17/08/2015]: 0.0.1 - Testing card [#847](https://trello.com/c/B9rpMWQP) __Opening a page with parameters in the page url__.
 
